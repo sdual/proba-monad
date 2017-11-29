@@ -1,0 +1,13 @@
+# IntelliJ.
+.idea/
+
+# os generated files.
+.DS_Store
+
+# sbt.
+target/
+*.class
+.history
+
+# data
+*.csv
