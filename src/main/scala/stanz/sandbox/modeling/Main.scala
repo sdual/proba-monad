@@ -1,11 +1,11 @@
 package stanz.sandbox.modeling
 
-import java.io.{FileOutputStream => FileStream, OutputStreamWriter => StreamWriter}
+import java.io.{File, FileOutputStream => FileStream, OutputStreamWriter => StreamWriter}
 
+import org.apache.commons.math3.distribution.NormalDistribution
 import stanz.sandbox.modeling.algorithm.MetropolisHastings
 import stanz.sandbox.modeling.distribution.DistributionInstances._
 import stanz.sandbox.modeling.distribution._
-import org.apache.commons.math3.distribution.NormalDistribution
 
 import scala.util.Random
 import scalaz.Scalaz._
@@ -28,8 +28,9 @@ object Main extends App {
   // print sampled data.
   println(sampled.map(x => s"${x._1},${x._2}").mkString("\n"))
 
-  val fileName = "/Users/tenoritama/git/personal/stanz/result.csv"
-  val fileOutPutStream = new FileStream(fileName, true)
+  val fileName = "./result.csv"
+  val outputFile = new File(fileName)
+  val fileOutPutStream = new FileStream(outputFile, true)
   val writer = new StreamWriter(fileOutPutStream, "UTF-8")
   // write sampled values of parameter a and b.
   writer.write("a,b\n")
