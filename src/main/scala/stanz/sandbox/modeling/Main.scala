@@ -10,45 +10,34 @@ import org.apache.commons.math3.distribution.NormalDistribution
 import scala.util.Random
 import scalaz.Scalaz._
 
-object TestMH extends App {
+object Main extends App {
 
   val mh = new MetropolisHastings
 
   val r = new Random
 
   val n = 100000
-  //val data: List[Int] = List(0, 1, 0, 0, 2, 0, 1, 0, 0, 1)
-
-  //val poi = new PoissonDistribution(3.2)
-  //def likelihood(x: Int): Double = poi.probability(x)
-
-  //println(trainingData())
 
   val ps = points(trainingData(), linear())
   //println(trainingData().map(x => s"${x._1},${x._2}").mkString("\n"))
+  // print training data.
   println(trainingData())
 
-  val sampled = (for {
-    result <- mh.run(n, ps)
-  } yield result)
-    .sample(r)
+  val sampled = mh.run(n, ps).sample(r)
 
-  //println(sampled.map(x => x._1).mkString("\n"))
+  // print sampled data.
+  println(sampled.map(x => s"${x._1},${x._2}").mkString("\n"))
 
-  val fileName = "/Users/tenoritama/git/bayesian-freaks/stanz/result.csv"
+  val fileName = "/Users/tenoritama/git/personal/stanz/result.csv"
   val fileOutPutStream = new FileStream(fileName, true)
   val writer = new StreamWriter(fileOutPutStream, "UTF-8")
+  // write sampled values of parameter a and b.
   writer.write("a,b\n")
   for {
     line <- sampled.reverse.map(x => s"${x._1},${x._2}").mkString("\n")
   } yield writer.write(line)
 
   writer.close()
-
-  /*(for {
-    result <- linear()
-  } yield println(result))
-    .sample(r)*/
 
   def point(data: (Double, Double), dist: Distribution[(Double, Double)]): Distribution[(Double, Double)] = {
     def func(param: (Double, Double)): Probability = {
