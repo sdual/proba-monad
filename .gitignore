@@ -11,3 +11,7 @@ target/
 
 # data
 *.csv
+
+# ensime
+.ensime
+.ensime_cache/
